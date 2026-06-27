@@ -1,0 +1,581 @@
+/* ========================================
+   FLESH 360 — Sistema de Diseño Global
+   Identidad: Flesh Studio
+   ======================================== */
+
+/* ===== Fuentes de marca (Indian Type Foundry) ===== */
+@font-face {
+  font-family: 'Clash Display';
+  src: url('../assets/fonts/ClashDisplay-Variable.woff2') format('woff2-variations'),
+       url('../assets/fonts/ClashDisplay-Variable.woff2') format('woff2'),
+       url('../assets/fonts/ClashDisplay-Variable.woff') format('woff');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Boska';
+  src: url('../assets/fonts/Boska-Variable.woff2') format('woff2-variations'),
+       url('../assets/fonts/Boska-Variable.woff2') format('woff2'),
+       url('../assets/fonts/Boska-Variable.woff') format('woff');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* =============================================================
+     Paleta de marca Flesh Studio — Guía v1.0 (Junio 2026)
+     CORAL como acento único (cálido / carnal / premium)
+     Proporción: 70% oscuro · 20% texto · 10% acentos
+     ============================================================= */
+
+  /* Crema/ivory (color del logo rayo, soporte de identidad) */
+  --ivory: #F2F2F5;
+  --ivory-soft: rgba(242, 242, 245, 0.85);
+  --ivory-dim: rgba(242, 242, 245, 0.5);
+
+  /* Backgrounds — negro azulado + carbón cálido (la guía manda) */
+  --bg-0: #0A0A0F;
+  --bg-1: #0D0D12;        /* fondo base */
+  --bg-2: #17151B;        /* superficie / cards */
+  --bg-3: #221E26;        /* tono más alto */
+  --bg-glass: rgba(23, 21, 27, 0.6);
+  --border: rgba(255, 107, 94, 0.10);
+  --border-strong: rgba(255, 107, 94, 0.22);
+
+  /* Texto sobre fondo oscuro (siempre claro, nunca coral en párrafos) */
+  --text-0: #F2F2F5;       /* blanco hueso */
+  --text-1: #E0E0E5;
+  --text-2: #A0A0AD;       /* gris cálido — subtítulos */
+  --text-3: #6E6E7A;
+
+  /* === ACENTOS CÁLIDOS (la familia coral manda) === */
+  --accent: #FF6B5E;       /* coral — color de marca */
+  --accent-2: #FFB088;     /* durazno — solo detalles */
+  --accent-3: #E04A57;     /* carmín — hover */
+  --shadow-warm: #5C2E2A;  /* marrón rojizo — sombras */
+  --on-accent: #3D130F;    /* texto sobre botones coral */
+
+  /* Gradiente coral→durazno (solo 1-2 lugares por sección) */
+  --gradient: linear-gradient(135deg, #FF6B5E 0%, #FFB088 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(255, 107, 94, 0.12) 0%, rgba(255, 176, 136, 0.10) 100%);
+  --gradient-ivory: linear-gradient(135deg, var(--ivory) 0%, rgba(242, 242, 245, 0.7) 100%);
+
+  /* Sombras */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 36px rgba(255, 107, 94, 0.35);
+  --shadow-glow-warm: 0 0 80px rgba(255, 107, 94, 0.18);
+  --shadow-ivory: 0 0 40px rgba(242, 242, 245, 0.12);
+
+  /* ===== Tipografía de marca ===== */
+  --font-display: 'Clash Display', 'Space Grotesk', -apple-system, sans-serif;
+  --font-serif: 'Boska', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Espaciado */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
+  --space-12: 6rem;
+  --space-16: 8rem;
+
+  /* Radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* Transiciones */
+  --t-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-med: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow: 500ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container: 1280px;
+  --navbar-h: 72px;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-0);
+  color: var(--text-1);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+img, video { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; color: inherit; }
+a { color: inherit; text-decoration: none; transition: color var(--t-fast); }
+a:hover { color: var(--accent-3); }
+
+/* ========================================
+   Tipografía
+   ======================================== */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--text-0);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 600;
+}
+h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); }
+h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.text-grad {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-ivory {
+  background: var(--gradient-ivory);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+}
+
+/* ========================================
+   Layout
+   ======================================== */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+section { padding: var(--space-12) 0; position: relative; }
+
+/* ========================================
+   Botones
+   ======================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all var(--t-med);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--gradient); /* coral → durazno */
+  color: var(--on-accent); /* marrón oscuro sobre coral (regla de marca) */
+  box-shadow: var(--shadow-glow);
+  font-weight: 700;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 60px rgba(255, 107, 94, 0.55);
+  background: linear-gradient(135deg, var(--accent-3) 0%, var(--accent) 100%);
+}
+
+.btn-ghost {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+}
+.btn-ghost:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-3);
+}
+
+.btn-sm { padding: 0.5rem 1.1rem; font-size: 0.85rem; }
+.btn-lg { padding: 1.1rem 2.25rem; font-size: 1.05rem; }
+
+/* ========================================
+   Navbar
+   ======================================== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--navbar-h);
+  background: rgba(7, 7, 10, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+.navbar .logo {
+  margin-right: auto; /* logo a la izquierda, todo lo demás agrupado a la derecha */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+  color: var(--ivory);
+}
+
+.logo-mark {
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ivory);
+  filter: drop-shadow(0 0 12px rgba(239, 234, 224, 0.25));
+  transition: all var(--t-med);
+}
+.logo:hover .logo-mark {
+  filter: drop-shadow(0 0 18px rgba(239, 234, 224, 0.5));
+  transform: rotate(-4deg);
+}
+.logo-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ====================================
+   Logo Flesh Studio (BLINDADO)
+   ====================================
+   Reglas robustas para que jamás se desborde:
+   - Altura fija sin importar la imagen fuente
+   - max-height + max-width como red de seguridad
+   - object-fit: contain para no deformar
+   - Sin filter al cargar (evita flash) */
+.logo.logo-img {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  max-height: 40px;
+  line-height: 1;
+  overflow: hidden;
+}
+.logo.logo-img img {
+  height: 40px !important;
+  max-height: 40px !important;
+  width: auto !important;
+  max-width: 180px !important;
+  display: block;
+  object-fit: contain;
+  object-position: left center;
+  transition: opacity 0.2s ease;
+}
+.logo.logo-img:hover img {
+  opacity: 0.85;
+}
+
+/* Footer y otras zonas con logo más chico */
+.footer .logo.logo-img,
+.footer .logo.logo-img img {
+  height: 36px;
+  max-height: 36px;
+}
+
+.nav-links { display: flex; gap: var(--space-6); align-items: center; }
+.nav-links a {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  font-weight: 500;
+}
+.nav-links a:hover { color: var(--text-0); }
+
+/* ========================================
+   Card
+   ======================================== */
+.card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  backdrop-filter: blur(20px);
+  transition: all var(--t-med);
+}
+.card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ========================================
+   Animaciones globales
+   ======================================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   Helpers
+   ======================================== */
+.grid { display: grid; gap: var(--space-6); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: var(--space-2); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.text-center { text-align: center; }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.max-w-2xl { max-width: 42rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 900px) {
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+  section { padding: var(--space-8) 0; }
+}
+
+@media (max-width: 600px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .container { padding: 0 var(--space-4); }
+}
+
+/* ========================================
+   Scrollbar
+   ======================================== */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-1); }
+::-webkit-scrollbar-thumb {
+  background: var(--bg-3);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ========================================
+   Selection
+   ======================================== */
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* ========================================
+   WhatsApp flotante
+   ======================================== */
+.wa-float {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #25D366;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 30px rgba(37, 211, 102, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 90;
+  transition: all var(--t-med);
+  animation: waBounceIn 0.6s 0.8s both;
+}
+
+.wa-float:hover {
+  background: #1ebe5d;
+  color: white;
+  transform: scale(1.08) translateY(-2px);
+  box-shadow:
+    0 14px 40px rgba(37, 211, 102, 0.6),
+    0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.wa-float svg {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.wa-float-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #25D366;
+  opacity: 0.6;
+  animation: waPulse 2.4s ease-out infinite;
+  z-index: 1;
+}
+
+.wa-float-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-2);
+  color: var(--text-1);
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+  font-size: 0.85rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--t-med);
+  transform-origin: right center;
+  font-weight: 400;
+}
+
+.wa-float-tooltip strong {
+  color: var(--text-0);
+  display: block;
+  font-size: 0.75rem;
+  color: #25D366;
+  font-weight: 600;
+}
+
+.wa-float-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: var(--bg-2);
+}
+
+.wa-float:hover .wa-float-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+/* El tooltip se muestra controlado desde JS (cada 5 min, 5s visible).
+   También aparece al hover (regla .wa-float:hover .wa-float-tooltip arriba). */
+.wa-float-tooltip.show-tip {
+  opacity: 1 !important;
+  transform: translateY(-50%) translateX(-4px) !important;
+}
+
+@keyframes waBounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes waPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes waTooltipPeek {
+  from { opacity: 0; transform: translateY(-50%) translateX(8px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(-4px); }
+}
+
+@keyframes waTooltipHide {
+  from { opacity: 1; transform: translateY(-50%) translateX(-4px); }
+  to { opacity: 0; transform: translateY(-50%) translateX(8px); pointer-events: none; }
+}
+
+@media (max-width: 600px) {
+  .wa-float {
+    bottom: var(--space-4);
+    right: var(--space-4);
+    width: 54px;
+    height: 54px;
+  }
+  .wa-float svg { width: 26px; height: 26px; }
+  .wa-float-tooltip { display: none; }
+}

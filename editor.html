@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editor · FLESH 360</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/editor.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+</head>
+<body class="editor-body">
+
+  <!-- ===== Top bar del editor ===== -->
+  <header class="editor-topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">
+        <svg viewBox="0 0 32 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 0 L4 24 L14 24 L8 48 L28 18 L18 18 L24 0 Z"/>
+        </svg>
+      </span>
+        <span style="font-size: 0.95rem;">FLESH <span style="color: var(--text-2); font-weight: 500;">360</span></span>
+      </a>
+      <div class="divider-v"></div>
+      <div class="project-name">
+        <input type="text" id="projectName" value="Mi primer tour 360°" />
+        <span class="save-indicator" id="saveIndicator">Guardado</span>
+      </div>
+    </div>
+    <div class="topbar-center">
+      <button class="tab-btn active" data-tab="edit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editar
+      </button>
+      <button class="tab-btn" data-tab="preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Vista previa
+      </button>
+      <button class="tab-btn" data-tab="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Ajustes
+      </button>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost btn-sm" id="btnPreview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Probar
+      </button>
+      <button class="btn btn-primary btn-sm" id="btnPublish">
+        Publicar →
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Layout principal ===== -->
+  <main class="editor-main">
+
+    <!-- ===== Panel izquierdo: escenas ===== -->
+    <aside class="panel-left">
+      <div class="panel-header">
+        <h4>Escenas</h4>
+        <button class="icon-btn-sm" id="btnAddScene" title="Agregar escena">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+
+      <div class="scenes-list" id="scenesList">
+        <!-- Las escenas se renderizan vía JS -->
+      </div>
+
+      <!-- Upload zone -->
+      <div class="upload-zone" id="uploadZone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p><strong>Subir foto 360°</strong></p>
+        <p class="upload-hint">Arrastra o click · JPG, PNG · Equirectangular</p>
+      </div>
+    </aside>
+
+    <!-- ===== Canvas central: visor con edición ===== -->
+    <section class="editor-canvas">
+      <div id="editorPano" class="editor-pano"></div>
+
+      <!-- Overlay con instrucción -->
+      <div class="canvas-overlay" id="canvasOverlay">
+        <div class="overlay-tip">
+          <span class="kbd-tip">💡</span>
+          <span>Doble click en el visor para agregar un hotspot</span>
+        </div>
+      </div>
+
+      <!-- Toolbar flotante -->
+      <div class="canvas-toolbar">
+        <button class="tool-btn active" data-tool="select" title="Seleccionar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+        </button>
+        <button class="tool-btn" data-tool="hotspot" title="Agregar hotspot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        </button>
+        <button class="tool-btn" data-tool="info" title="Punto de información">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+        <button class="tool-btn" data-tool="measure" title="Medir">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </button>
+        <div class="tool-divider"></div>
+        <button class="tool-btn" data-tool="undo" title="Deshacer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6M21 17a9 9 0 00-15-6.7L3 13"/></svg>
+        </button>
+        <button class="tool-btn" data-tool="redo" title="Rehacer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6M3 17a9 9 0 0115-6.7L21 13"/></svg>
+        </button>
+      </div>
+
+      <!-- Position indicator -->
+      <div class="position-indicator">
+        <span id="yawValue">Yaw: 0°</span>
+        <span id="pitchValue">Pitch: 0°</span>
+      </div>
+    </section>
+
+    <!-- ===== Panel derecho: propiedades ===== -->
+    <aside class="panel-right">
+      <div class="panel-tabs">
+        <button class="ptab active" data-ptab="scene">Escena</button>
+        <button class="ptab" data-ptab="hotspots">Hotspots</button>
+        <button class="ptab" data-ptab="design">Diseño</button>
+      </div>
+
+      <!-- Tab: Escena -->
+      <div class="ptab-content active" data-ptab-content="scene">
+        <div class="form-group">
+          <label>Nombre de la escena</label>
+          <input type="text" id="sceneName" value="Living" />
+        </div>
+        <div class="form-group">
+          <label>Subtítulo</label>
+          <input type="text" id="sceneSub" value="Sala principal · 28m²" />
+        </div>
+        <div class="form-group">
+          <label>Vista inicial</label>
+          <div class="row-2">
+            <input type="number" id="initialYaw" value="0" placeholder="Yaw" />
+            <input type="number" id="initialPitch" value="0" placeholder="Pitch" />
+          </div>
+          <button class="btn-link" id="captureView">📌 Capturar vista actual</button>
+        </div>
+        <div class="form-group">
+          <label>Zoom inicial (FOV)</label>
+          <input type="range" id="initialFov" min="50" max="120" value="100" />
+          <div class="slider-val"><span id="fovValue">100°</span></div>
+        </div>
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="autoRotateChk" checked />
+            <span class="toggle"></span>
+            <span>Auto-rotación</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label>Música ambiente</label>
+          <div class="audio-slot">
+            <span>+ Subir audio</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Hotspots -->
+      <div class="ptab-content" data-ptab-content="hotspots">
+        <div class="hotspot-list" id="hotspotList">
+          <div class="hotspot-item">
+            <div class="hs-icon hs-icon-nav">↗</div>
+            <div class="hs-info">
+              <strong>Ir a Cocina</strong>
+              <small>Navegación · yaw 117°</small>
+            </div>
+            <button class="hs-delete">×</button>
+          </div>
+          <div class="hotspot-item">
+            <div class="hs-icon hs-icon-nav">↗</div>
+            <div class="hs-info">
+              <strong>Salir al exterior</strong>
+              <small>Navegación · yaw -90°</small>
+            </div>
+            <button class="hs-delete">×</button>
+          </div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%; margin-top: 1rem;">
+          + Nuevo hotspot
+        </button>
+      </div>
+
+      <!-- Tab: Diseño -->
+      <div class="ptab-content" data-ptab-content="design">
+        <div class="form-group">
+          <label>Color de marca</label>
+          <div class="color-picker-row">
+            <span class="color-swatch active" style="background: #7c5cff"></span>
+            <span class="color-swatch" style="background: #ff5ca8"></span>
+            <span class="color-swatch" style="background: #00e0ff"></span>
+            <span class="color-swatch" style="background: #2ecc71"></span>
+            <span class="color-swatch" style="background: #f59e0b"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Estilo del visor</label>
+          <select>
+            <option>Minimal (oscuro)</option>
+            <option>Minimal (claro)</option>
+            <option>Profesional</option>
+            <option>Inmobiliaria</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Logo personalizado</label>
+          <div class="logo-slot">
+            <span>+ Subir logo</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" checked />
+            <span class="toggle"></span>
+            <span>Mostrar floorplan</span>
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" checked />
+            <span class="toggle"></span>
+            <span>Permitir compartir</span>
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" />
+            <span class="toggle"></span>
+            <span>Modo VR</span>
+          </label>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modal de "publicar" -->
+  <div class="info-modal" id="publishModal">
+    <div class="info-content">
+      <button class="info-close" id="publishClose">×</button>
+      <h3>🎉 ¡Tu tour está listo!</h3>
+      <p>Esta es la versión demo. En producción tendrías:</p>
+      <ul style="margin-top:1rem; list-style:none;">
+        <li>✓ URL pública: <code style="color: var(--accent-3)">flesh360.com/v/abc123</code></li>
+        <li>✓ Código embed para tu web</li>
+        <li>✓ QR code descargable</li>
+        <li>✓ Analytics en tiempo real</li>
+      </ul>
+      <div style="display:flex; gap: 0.75rem; margin-top: 1.5rem;">
+        <a href="viewer.html" class="btn btn-primary" style="flex:1; text-align:center;">Ver tour demo →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/editor.js?v=20260619a"></script>
+</body>
+</html>

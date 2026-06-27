@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Hacienda del Sol · Masterplan 360°</title>
+  <meta name="description" content="Recorrido virtual interactivo del masterplan. Vistas aéreas, El Casco, amenities y plano interactivo." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/viewer.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+</head>
+<body class="viewer-body" oncontextmenu="return false;">
+
+  <!-- ===== Visor en pantalla completa ===== -->
+  <div id="panorama" class="viewer-pano"></div>
+
+  <!-- ===== Loading splash con branding ===== -->
+  <div id="loading" class="viewer-loading">
+    <div class="loading-brand">
+      <span class="loading-mark">
+        <svg viewBox="0 0 32 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 0 L4 24 L14 24 L8 48 L28 18 L18 18 L24 0 Z"/>
+        </svg>
+      </span>
+      <span class="loading-name">HACIENDA DEL SOL</span>
+      <span class="loading-tag">Masterplan Interactivo 360°</span>
+    </div>
+    <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+    <p class="loading-msg" id="loadingMsg">Cargando vista inicial…</p>
+    <p class="loading-credit">Producido por <strong>FLESH 360</strong> · Flesh Studio</p>
+  </div>
+
+  <!-- ===== Top bar ===== -->
+  <header class="viewer-topbar">
+    <button id="menuToggle" class="menu-btn" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span>Menú completo</span>
+    </button>
+
+    <div class="brand-block">
+      <span class="brand-mark">
+        <svg viewBox="0 0 32 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 0 L4 24 L14 24 L8 48 L28 18 L18 18 L24 0 Z"/>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <strong>HACIENDA DEL SOL</strong>
+        <small id="sceneTitle">Acceso Principal</small>
+      </div>
+    </div>
+
+    <div class="viewer-actions">
+      <button id="btnLang" class="icon-btn" title="Idioma" data-lang="ES"><span style="font-size: 0.75rem; font-weight: 600;">ES</span></button>
+      <button id="btnNight" class="icon-btn" title="Modo noche">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button id="btnShare" class="icon-btn" title="Compartir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+      </button>
+      <button id="btnFullscreen" class="icon-btn" title="Pantalla completa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V3h4M21 7V3h-4M3 17v4h4M21 17v4h-4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Side menu (Menú completo) ===== -->
+  <aside id="sideMenu" class="side-menu">
+    <div class="side-menu-header">
+      <h3>Menú completo</h3>
+      <button class="side-close" id="menuClose" aria-label="Cerrar">×</button>
+    </div>
+    <div class="side-menu-body">
+
+      <div class="menu-section">
+        <div class="menu-section-label">Plano interactivo</div>
+        <button class="menu-item menu-item-feature" data-action="openMap">
+          <span class="menu-item-icon">🗺</span>
+          <span>Abrir plano del proyecto</span>
+        </button>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-label">Vistas aéreas</div>
+        <button class="menu-item" data-scene="acceso"><span class="menu-item-icon">🛣</span>Acceso Principal</button>
+        <button class="menu-item" data-scene="lagunas"><span class="menu-item-icon">🏞</span>Lagunas del Golf</button>
+        <button class="menu-item" data-scene="polo"><span class="menu-item-icon">🐎</span>Canchas de Polo</button>
+        <button class="menu-item" data-scene="alamos"><span class="menu-item-icon">🌲</span>Los Álamos</button>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-label">El Casco</div>
+        <button class="menu-item" data-scene="casco-frente"><span class="menu-item-icon">🏛</span>Vista Frontal</button>
+        <button class="menu-item" data-scene="casco-trasera"><span class="menu-item-icon">🌅</span>Vista Trasera</button>
+        <button class="menu-item" data-scene="casco-nocturna"><span class="menu-item-icon">🌙</span>Vista Nocturna</button>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-label">Amenities</div>
+        <button class="menu-item" data-action="openAlbum" data-album="club"><span class="menu-item-icon">🖼</span>Club House (4 fotos)</button>
+        <button class="menu-item" data-action="openAlbum" data-album="hipico"><span class="menu-item-icon">🖼</span>Club Hípico (3 fotos)</button>
+        <button class="menu-item" data-action="openAlbum" data-album="deportes"><span class="menu-item-icon">🖼</span>Deportes (3 fotos)</button>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-label">Más</div>
+        <button class="menu-item" data-action="openVideo"><span class="menu-item-icon">▶</span>Video institucional</button>
+        <button class="menu-item" data-action="openLocation"><span class="menu-item-icon">📍</span>Cómo llegar</button>
+        <button class="menu-item" data-action="openInfo"><span class="menu-item-icon">ℹ️</span>Información del proyecto</button>
+      </div>
+
+    </div>
+    <div class="side-menu-footer">
+      <a href="https://wa.me/5492944152161?text=Hola%20me%20interesa%20Hacienda%20del%20Sol" target="_blank" rel="noopener" class="menu-wa">
+        <span class="wa-ic">💬</span>
+        <div>
+          <strong>Solicitar info</strong>
+          <small>Respondemos al instante</small>
+        </div>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ===== Plano interactivo (modal) ===== -->
+  <div id="planModal" class="plan-modal">
+    <div class="plan-modal-body">
+      <div class="plan-modal-header">
+        <div>
+          <strong>Plano interactivo</strong>
+          <small>Click en cada punto para ingresar a esa vista 360°</small>
+        </div>
+        <button class="info-close" id="planClose">×</button>
+      </div>
+      <div class="plan-canvas">
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fondo del terreno -->
+          <defs>
+            <linearGradient id="terrainBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2a3a2a"/>
+              <stop offset="100%" stop-color="#1a2a1a"/>
+            </linearGradient>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="800" height="500" fill="url(#terrainBg)"/>
+          <rect width="800" height="500" fill="url(#grid)"/>
+
+          <!-- Caminos -->
+          <path d="M 50 250 Q 200 200 400 250 T 750 250" stroke="rgba(218,179,107,0.4)" stroke-width="3" fill="none"/>
+          <path d="M 400 100 Q 380 250 420 400" stroke="rgba(218,179,107,0.3)" stroke-width="2" fill="none"/>
+          <path d="M 200 350 Q 350 320 500 380" stroke="rgba(218,179,107,0.3)" stroke-width="2" fill="none"/>
+
+          <!-- Lagunas -->
+          <ellipse cx="180" cy="180" rx="55" ry="35" fill="rgba(74, 139, 184, 0.35)" stroke="rgba(74, 139, 184, 0.6)" stroke-width="1.5"/>
+          <ellipse cx="600" cy="160" rx="45" ry="30" fill="rgba(74, 139, 184, 0.35)" stroke="rgba(74, 139, 184, 0.6)" stroke-width="1.5"/>
+          <ellipse cx="540" cy="380" rx="38" ry="24" fill="rgba(74, 139, 184, 0.35)" stroke="rgba(74, 139, 184, 0.6)" stroke-width="1.5"/>
+
+          <!-- Bosque (los álamos) -->
+          <g opacity="0.5">
+            <circle cx="100" cy="400" r="6" fill="#3a5a3a"/>
+            <circle cx="115" cy="395" r="7" fill="#3a5a3a"/>
+            <circle cx="130" cy="408" r="6" fill="#3a5a3a"/>
+            <circle cx="145" cy="402" r="7" fill="#3a5a3a"/>
+            <circle cx="105" cy="420" r="6" fill="#3a5a3a"/>
+            <circle cx="125" cy="425" r="7" fill="#3a5a3a"/>
+            <circle cx="155" cy="418" r="6" fill="#3a5a3a"/>
+          </g>
+
+          <!-- El Casco -->
+          <g>
+            <rect x="380" y="230" width="40" height="40" fill="#c9a16a" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+            <polygon points="380,230 400,210 420,230" fill="#8a5a3a"/>
+            <text x="400" y="285" fill="rgba(255,255,255,0.8)" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">EL CASCO</text>
+          </g>
+
+          <!-- Labels de zonas -->
+          <text x="180" y="135" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Inter" text-anchor="middle">Lagunas del Golf</text>
+          <text x="600" y="115" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Inter" text-anchor="middle">Bien Alta</text>
+          <text x="125" y="450" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Inter" text-anchor="middle">Los Álamos</text>
+          <text x="650" y="430" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Inter" text-anchor="middle">Canchas de Polo</text>
+          <text x="120" y="270" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Inter" text-anchor="middle">Acceso Principal</text>
+
+          <!-- Puntos de escenas -->
+          <g class="plan-point" data-scene="acceso">
+            <circle cx="80" cy="250" r="14" class="pp-ring"/>
+            <circle cx="80" cy="250" r="6" class="pp-dot"/>
+            <text x="80" y="254" fill="white" font-size="8" font-family="Inter" font-weight="700" text-anchor="middle">1</text>
+          </g>
+
+          <g class="plan-point" data-scene="lagunas">
+            <circle cx="180" cy="180" r="14" class="pp-ring"/>
+            <circle cx="180" cy="180" r="6" class="pp-dot"/>
+            <text x="180" y="184" fill="white" font-size="8" font-family="Inter" font-weight="700" text-anchor="middle">2</text>
+          </g>
+
+          <g class="plan-point" data-scene="alamos">
+            <circle cx="125" cy="410" r="14" class="pp-ring"/>
+            <circle cx="125" cy="410" r="6" class="pp-dot"/>
+            <text x="125" y="414" fill="white" font-size="8" font-family="Inter" font-weight="700" text-anchor="middle">3</text>
+          </g>
+
+          <g class="plan-point" data-scene="casco-frente">
+            <circle cx="400" cy="250" r="14" class="pp-ring"/>
+            <circle cx="400" cy="250" r="6" class="pp-dot"/>
+            <text x="400" y="254" fill="white" font-size="8" font-family="Inter" font-weight="700" text-anchor="middle">4</text>
+          </g>
+
+          <g class="plan-point" data-scene="polo">
+            <circle cx="640" cy="400" r="14" class="pp-ring"/>
+            <circle cx="640" cy="400" r="6" class="pp-dot"/>
+            <text x="640" y="404" fill="white" font-size="8" font-family="Inter" font-weight="700" text-anchor="middle">5</text>
+          </g>
+
+          <!-- Brújula -->
+          <g transform="translate(740, 60)">
+            <circle r="20" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            <text y="-8" fill="white" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">N</text>
+            <polygon points="0,-12 -3,0 3,0" fill="#da b36b"/>
+          </g>
+
+          <!-- Escala -->
+          <g transform="translate(50, 460)">
+            <line x1="0" y1="0" x2="80" y2="0" stroke="white" stroke-width="2"/>
+            <line x1="0" y1="-4" x2="0" y2="4" stroke="white" stroke-width="2"/>
+            <line x1="80" y1="-4" x2="80" y2="4" stroke="white" stroke-width="2"/>
+            <text x="40" y="-8" fill="rgba(255,255,255,0.7)" font-size="9" font-family="Inter" text-anchor="middle">200m</text>
+          </g>
+        </svg>
+      </div>
+      <div class="plan-legend">
+        <span class="legend-item"><span class="legend-dot legend-water"></span>Lagunas</span>
+        <span class="legend-item"><span class="legend-dot legend-house"></span>El Casco</span>
+        <span class="legend-item"><span class="legend-dot legend-point"></span>Vistas 360° disponibles</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Mini compass + zone label ===== -->
+  <div class="zone-pill" id="zonePill">
+    <span class="zone-num" id="zoneNum">1</span>
+    <div>
+      <strong id="zoneName">Acceso Principal</strong>
+      <small id="zoneSub">Vista aérea · Norte</small>
+    </div>
+  </div>
+
+  <div class="compass" id="compass">
+    <svg viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="28" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+      <g id="compassNeedle" style="transform-origin: 30px 30px;">
+        <polygon points="30,8 26,30 30,28 34,30" fill="#dab36b"/>
+        <polygon points="30,52 26,30 30,32 34,30" fill="rgba(255,255,255,0.4)"/>
+      </g>
+      <text x="30" y="6" fill="white" font-size="8" font-family="Inter" font-weight="700" text-anchor="middle">N</text>
+      <text x="56" y="33" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter" text-anchor="middle">E</text>
+      <text x="30" y="59" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter" text-anchor="middle">S</text>
+      <text x="4" y="33" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter" text-anchor="middle">O</text>
+    </svg>
+  </div>
+
+  <!-- ===== Bottom controls ===== -->
+  <div class="viewer-controls">
+    <button id="btnAutoRotate" class="icon-btn active" title="Auto rotación">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+    </button>
+    <button id="btnZoomIn" class="icon-btn" title="Acercar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+    <button id="btnZoomOut" class="icon-btn" title="Alejar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+    <button id="btnSound" class="icon-btn" title="Sonido">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+    </button>
+    <div class="control-divider"></div>
+    <button id="btnOpenPlan" class="icon-btn btn-plan" title="Plano interactivo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span style="margin-left: 0.4rem; font-size: 0.78rem;">Plano</span>
+    </button>
+    <button id="btnInfo" class="icon-btn" title="Información del proyecto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== Floating WhatsApp ===== -->
+  <a href="https://wa.me/5492944152161?text=Hola%20me%20interesa%20Hacienda%20del%20Sol" target="_blank" rel="noopener" class="wa-float" aria-label="Contactar por WhatsApp">
+    <span class="wa-float-pulse"></span>
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16.003 0C7.17 0 .008 7.16.005 15.99c0 2.82.74 5.57 2.14 7.99L0 32l8.21-2.16a15.96 15.96 0 0 0 7.79 1.99h.01c8.83 0 15.99-7.16 16-15.99 0-4.27-1.66-8.29-4.69-11.32A15.92 15.92 0 0 0 16.003 0zm0 29.33h-.01a13.3 13.3 0 0 1-6.79-1.86l-.49-.29-5.06 1.33 1.35-4.93-.32-.51a13.27 13.27 0 0 1-2.05-7.07c0-7.34 5.99-13.32 13.36-13.32 3.57 0 6.92 1.39 9.44 3.92 2.52 2.53 3.92 5.89 3.92 9.46 0 7.34-5.99 13.32-13.36 13.32zm7.32-9.97c-.4-.2-2.37-1.17-2.74-1.3-.37-.14-.64-.2-.91.2-.27.4-1.04 1.3-1.27 1.57-.23.27-.47.3-.87.1-.4-.2-1.69-.62-3.22-1.99-1.19-1.06-1.99-2.37-2.22-2.78-.23-.4-.02-.61.18-.81.18-.18.4-.47.6-.7.2-.23.27-.4.4-.67.13-.27.07-.5-.03-.7-.1-.2-.9-2.16-1.23-2.96-.32-.78-.66-.67-.9-.69h-.77c-.27 0-.7.1-1.07.5-.37.4-1.4 1.37-1.4 3.34 0 1.97 1.44 3.87 1.64 4.14.2.27 2.83 4.32 6.85 6.06.96.41 1.7.66 2.29.85.96.31 1.83.26 2.53.16.77-.12 2.37-.97 2.71-1.91.33-.94.33-1.74.23-1.91-.1-.17-.37-.27-.77-.47z"/>
+    </svg>
+  </a>
+
+  <!-- ===== Info modal del proyecto ===== -->
+  <div class="info-modal" id="infoModal">
+    <div class="info-content info-content-wide">
+      <button class="info-close" id="infoClose">×</button>
+      <h3>Hacienda del Sol</h3>
+      <p style="color: var(--text-2);">Country club premium · 320 hectáreas · 35 minutos de Aeroparque</p>
+
+      <div class="info-stats">
+        <div><strong>180</strong><span>Lotes residenciales</span></div>
+        <div><strong>320 ha</strong><span>Superficie total</span></div>
+        <div><strong>35'</strong><span>De Aeroparque</span></div>
+        <div><strong>50'</strong><span>De CABA</span></div>
+      </div>
+
+      <h4 style="margin-top: 1.5rem;">Amenities incluidos</h4>
+      <ul style="margin-top: 0.5rem;">
+        <li>🐎 Cancha de polo profesional</li>
+        <li>⛳ 9 hoyos de golf · 3 lagunas</li>
+        <li>🏛 Club House con restaurante</li>
+        <li>🐴 Club Hípico</li>
+        <li>🎾 Canchas de tenis y pádel</li>
+        <li>🌳 Bosques de álamos centenarios</li>
+      </ul>
+
+      <p style="margin-top: 1.5rem; color: var(--text-3); font-size: 0.85rem;">
+        Demo construida por <strong style="color: var(--text-1);">FLESH 360 · Flesh Studio</strong>.
+        Tu proyecto puede verse así.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== Photo Album modal ===== -->
+  <div class="info-modal" id="albumModal">
+    <div class="info-content album-content">
+      <button class="info-close" id="albumClose">×</button>
+      <h3 id="albumTitle">Club House</h3>
+      <div class="album-stage">
+        <img id="albumImg" src="" alt="" />
+        <button class="album-nav album-prev" id="albumPrev">‹</button>
+        <button class="album-nav album-next" id="albumNext">›</button>
+        <span class="album-counter" id="albumCounter">1 / 4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Video modal ===== -->
+  <div class="info-modal" id="videoModal">
+    <div class="info-content video-content">
+      <button class="info-close" id="videoClose">×</button>
+      <div class="video-wrap">
+        <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Location modal ===== -->
+  <div class="info-modal" id="locationModal">
+    <div class="info-content video-content">
+      <button class="info-close" id="locationClose">×</button>
+      <h3 style="padding: 0 0 1rem;">Cómo llegar</h3>
+      <div class="video-wrap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52472.04167!2d-58.5856492!3d-34.9702009!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcd8ec89972a6d%3A0xcc1637390682de65!2sEstancia%20Villa%20Maria!5e1!3m2!1ses!2sar!4v1735000000000" frameborder="0" loading="lazy" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/viewer.js?v=20260619a"></script>
+</body>
+</html>
